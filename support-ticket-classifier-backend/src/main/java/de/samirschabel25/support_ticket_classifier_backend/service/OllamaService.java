@@ -16,74 +16,98 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 public class OllamaService {
 
-    private final RestClient restClient;
-    private final ObjectMapper objectMapper;
+        private final RestClient restClient;
+        private final ObjectMapper objectMapper;
 
-    public String ask(String prompt) {
+        public String ask(String prompt) {
 
-        OllamaRequest request = new OllamaRequest(
-                "gemma3:4b",
-                prompt,
-                false);
+                OllamaRequest request = new OllamaRequest(
+                                "gemma3:4b",
+                                prompt,
+                                false);
 
-        OllamaResponse response = restClient.post()
-                .uri("http://localhost:11434/api/generate")
-                .body(request)
-                .retrieve()
-                .body(OllamaResponse.class);
+                OllamaResponse response = restClient.post()
+                                .uri("http://localhost:11434/api/generate")
+                                .body(request)
+                                .retrieve()
+                                .body(OllamaResponse.class);
 
-        return response.response();
-    }
+                return response.response();
+        }
 
-    public TicketAnalysisResponse analyzeTicket(
-            String title,
-            String description) throws Exception {
+        public TicketAnalysisResponse analyzeTicket(
+                        String title,
+                        String description) throws Exception {
 
-        String prompt = """
-                You are a support ticket classifier.
+                String prompt = """
+                                                                You are a support ticket classifier.
 
-                Analyze the ticket and return ONLY valid JSON.
+                                                                Analyze the ticket and return ONLY valid JSON.
 
-                Allowed categories:
-                LOGIN_PROBLEM
-                PAYMENT_PROBLEM
-                TECHNICAL_ERROR
-                ACCOUNT_MANAGEMENT
-                FEATURE_REQUEST
-                OTHER
+                                                                Allowed categories:
+                                                                LOGIN_PROBLEM
+                                                                PAYMENT_PROBLEM
+                                                                TECHNICAL_ERROR
+                                                                ACCOUNT_MANAGEMENT
+                                                                FEATURE_REQUEST
+                                                                OTHER
 
-                Allowed priorities:
-                LOW
-                MEDIUM
-                HIGH
-                CRITICAL
+                                                                Allowed priorities:
+                                                                LOW
+                                                                MEDIUM
+                                                                HIGH
+                                                                CRITICAL
 
-                Allowed sentiments:
-                POSITIVE
-                NEUTRAL
-                NEGATIVE
+                                                                Allowed sentiments:
+                                                                POSITIVE
+                                                                NEUTRAL
+                                                                NEGATIVE
 
-                Ticket title:
-                %s
+                                                                Ticket title:
+                                                                %s
 
-                Ticket description:
-                %s
+                                                                Ticket description:
+                                                                %s
 
-                Return ONLY this JSON format:
+                                                                Additionally provide a short and practical solution for a first-level support agent.
 
-                {
-                  "category": "...",
-                  "priority": "...",
-                  "sentiment": "...",
-                  "summary": "..."
-                }
-                """.formatted(title, description);
+                                The solution should:
 
-        String json = ask(prompt);
+                                - be concise
+                                - contain 2–4 sentences
+                                - describe the first troubleshooting steps
+                                - not invent facts that are not mentioned in the ticket
 
-        return objectMapper.readValue(
-                json,
-                TicketAnalysisResponse.class);
-    }
+                                                                Return ONLY this JSON format:
+
+                                                                {
+                                  "category": "...",
+                                  "priority": "...",
+                                  "sentiment": "...",
+                                  "summary": "...",
+                                  "solution": "..."
+                                }
+                                                                """
+                                .formatted(title, description);
+
+                String json = ask(prompt);
+
+                System.out.println("=== OLLAMA RESPONSE ===");
+                System.out.println(json);
+
+                // Markdown entfernen
+                json = json
+                                .replace("```json", "")
+                                .replace("```", "")
+                                .trim();
+
+                System.out.println("=== CLEANED JSON ===");
+                System.out.println(json);
+
+                return objectMapper.readValue(
+                                json,
+                                TicketAnalysisResponse.class);
+
+        }
 
 }

@@ -4,6 +4,10 @@ import jakarta.persistence.*;
 import lombok.*;
 import java.time.LocalDateTime;
 
+import de.samirschabel25.support_ticket_classifier_backend.model.TicketCategory;
+import de.samirschabel25.support_ticket_classifier_backend.model.TicketPriority;
+import de.samirschabel25.support_ticket_classifier_backend.model.TicketSentiment;
+
 @Entity
 @Table(name = "tickets")
 @Getter
@@ -22,14 +26,19 @@ public class Ticket {
     @Column(columnDefinition = "TEXT")
     private String description;
 
-    private String category;
+    @Enumerated(EnumType.STRING)
+    private TicketCategory category;
 
-    private String priority;
+    @Enumerated(EnumType.STRING)
+    private TicketPriority priority;
 
-    private String sentiment;
+    @Enumerated(EnumType.STRING)
+    private TicketSentiment sentiment;
 
     @Column(columnDefinition = "TEXT")
     private String summary;
+
+    private String solution;
 
     private LocalDateTime createdAt;
 }

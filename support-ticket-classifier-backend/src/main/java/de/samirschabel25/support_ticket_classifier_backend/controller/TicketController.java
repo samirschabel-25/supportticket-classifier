@@ -1,6 +1,7 @@
 package de.samirschabel25.support_ticket_classifier_backend.controller;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -8,10 +9,13 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import de.samirschabel25.support_ticket_classifier_backend.dto.CreateTicketRequest;
 import de.samirschabel25.support_ticket_classifier_backend.dto.TicketAnalysisResponse;
+import de.samirschabel25.support_ticket_classifier_backend.dto.TicketResponse;
 import de.samirschabel25.support_ticket_classifier_backend.entity.Ticket;
 import de.samirschabel25.support_ticket_classifier_backend.service.OllamaService;
 import de.samirschabel25.support_ticket_classifier_backend.service.TicketService;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 
 @RestController
@@ -23,10 +27,10 @@ public class TicketController {
     private final OllamaService ollamaService;
 
     @PostMapping
-    public Ticket createTicket(
-            @RequestBody Ticket ticket) throws Exception {
+    public TicketResponse createTicket(
+            @Valid @RequestBody CreateTicketRequest request) throws Exception {
 
-        return ticketService.createTicket(ticket);
+        return ticketService.createTicket(request);
     }
 
     @GetMapping("/test-ai")
@@ -42,6 +46,12 @@ public class TicketController {
         return ollamaService.analyzeTicket(
                 "Login funktioniert nicht",
                 "Seit dem letzten Update bekomme ich Fehler 500.");
+    }
+
+    @GetMapping
+    public List<TicketResponse> getAllTickets() {
+
+        return ticketService.getAllTickets();
     }
 
 }
