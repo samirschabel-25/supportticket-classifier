@@ -106,7 +106,10 @@ The dashboard includes:
 
 ## 📸 Screenshots
 
-> Add screenshots here.
+![Dashboard](screenshots/Dashboard_Header.png)
+![Dashboard_Statistics](screenshots/Dashboard_Statistics.png)
+![Dashboard_AI_Solution](screenshots/AI_Solution.png)
+![Dashboard_Ticket_Table](screenshots/Dashboard_Ticket_List.png)
 
 Example:
 

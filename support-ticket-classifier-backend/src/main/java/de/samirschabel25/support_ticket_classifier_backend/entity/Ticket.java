@@ -38,6 +38,7 @@ public class Ticket {
     @Column(columnDefinition = "TEXT")
     private String summary;
 
+    @Column(columnDefinition = "TEXT")
     private String solution;
 
     private LocalDateTime createdAt;
