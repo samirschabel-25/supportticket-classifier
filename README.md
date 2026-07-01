@@ -106,19 +106,22 @@ The dashboard includes:
 
 ## 📸 Screenshots
 
+### Dashboard
 ![Dashboard](screenshots/Dashboard_Header.png)
+
+### Statistics
+
 ![Dashboard_Statistics](screenshots/Dashboard_Statistics.png)
+
+### AI Solution
+
 ![Dashboard_AI_Solution](screenshots/AI_Solution.png)
+
+### Ticket Table
+
 ![Dashboard_Ticket_Table](screenshots/Dashboard_Ticket_List.png)
 
-Example:
 
-- Dashboard
-- Ticket Analysis
-- AI Recommendation
-- Ticket Table
-
----
 
 ## ⚙️ Installation
 
